@@ -28,18 +28,21 @@ function love.load()
 end
 
 function love.update(dt)
-	player.act_y = player.act_y - ((player.act_y - player.grid_y) * player.speed * dt)
-	player.act_x = player.act_x - ((player.act_x - player.grid_x) * player.speed * dt)
-    if map[player.grid_y/32][player.grid_x/32] == 1 then
-        player.grid_x = player.grid_x + 32
+	--player.act_y = player.act_y - ((player.act_y - player.grid_y) * player.speed * dt)
+	--player.act_x = player.act_x - ((player.act_x - player.grid_x) * player.speed * dt)
+    --[[
+	if map[player.grid_y/32][player.grid_x/32] == 1 then
+        player.grid_x = player.grid_x + 32*dt
     elseif map[player.grid_y/32][player.grid_x/32] == 2 then
-        player.grid_x = player.grid_x - 32
+        player.grid_x = player.grid_x - 32*dt
     elseif map[player.grid_y/32][player.grid_x/32] == 3 then
-        player.grid_y = player.grid_y - 32
+        player.grid_y = player.grid_y - 32*dt
     elseif map[player.grid_y/32][player.grid_x/32] == 4 then
-        player.grid_y = player.grid_y + 32
+        player.grid_y = player.grid_y + 32*dt
     end
-	print (player.grid_x..", "..player.grid_y.."\n")
+	--]]
+	moveRail(rounding(player.grid_x/32), rounding(player.grid_y/32), dt)
+	print (player.grid_x..", "..player.grid_y.. ", dt: " ..dt.. "\n")
 end
 
 function love.draw()
@@ -53,14 +56,24 @@ function love.draw()
 	end
 end
 
-function moveRail(x, y)
+function moveRail(x, y, dt)
     if map[y][x] == 1 then
-        player.grid_x = player.grid_x + 32
+        player.grid_x = player.grid_x + 32*dt*1
     elseif map[y][x] == 2 then
-        player.grid_x = player.grid_x - 32
+        player.grid_x = player.grid_x - 32*dt*1
     elseif map[y][x] == 3 then
-        player.grid_y = player.grid_y + 32
+        player.grid_y = player.grid_y - 32*dt*1
     elseif map[y][x] == 4 then
-        player.grid_y = player.grid_y - 32
+        player.grid_y = player.grid_y + 32*dt*1
     end
+end
+
+function rounding(num)
+	i = 0
+	while num > 32 do
+		num = num - 32
+		i = i + 1
+	end
+	     print (i)
+	return i
 end
